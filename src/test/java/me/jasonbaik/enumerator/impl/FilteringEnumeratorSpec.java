@@ -96,7 +96,7 @@ public class FilteringEnumeratorSpec {
 
 	@SuppressWarnings("unchecked")
 	@Test
-	public void givenEmptyEnumeratorWhenIteratingThenNextAndTestNotCalled() {
+	public void givenEmptyEnumeratorWhenIteratingThenNextAndPredicateNotCalled() {
 		IEnumerator<String> enumerator = Mockito.mock(IEnumerator.class);
 		Mockito.when(enumerator.iterator()).thenReturn(new Iterator<String>() {
 
@@ -183,7 +183,7 @@ public class FilteringEnumeratorSpec {
 
 	@SuppressWarnings("unchecked")
 	@Test
-	public void givenNonEmptyEnumeratorWithFiletrableElementsWhenItearatingThenSkipFilterableElements() {
+	public void givenNonEmptyEnumeratorWithFilterableElementsWhenItearatingThenSkipFilterableElements() {
 		IEnumerator<String> enumerator = Mockito.mock(IEnumerator.class);
 		Mockito.when(enumerator.iterator()).thenReturn(new Iterator<String>() {
 

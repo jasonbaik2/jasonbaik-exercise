@@ -7,6 +7,7 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<jacoco.version>0.7.7.201606060606</jacoco.version>
 	</properties>
 
 	<build>
@@ -28,30 +29,20 @@
 					<includes>
 						<include>**/*Spec.java</include>
 					</includes>
+					<systemPropertyVariables>
+						<jacoco-agent.destfile>target/jacoco.exec</jacoco-agent.destfile>
+					</systemPropertyVariables>
 				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
-				<version>0.7.7.201606060606</version>
+				<version>${jacoco.version}</version>
 				<executions>
 					<execution>
-						<id>default-instrument</id>
+						<id>default-prepare-agent</id>
 						<goals>
-							<goal>instrument</goal>
-						</goals>
-					</execution>
-					<execution>
-						<id>default-restore-instrumented-classes</id>
-						<goals>
-							<goal>restore-instrumented-classes</goal>
-						</goals>
-					</execution>
-					<execution>
-						<id>default-report</id>
-						<phase>test</phase>
-						<goals>
-							<goal>report</goal>
+							<goal>prepare-agent</goal>
 						</goals>
 					</execution>
 					<execution>
@@ -74,6 +65,13 @@
 								</rule>
 							</rules>
 						</configuration>
+					</execution>
+					<execution>
+						<id>default-report</id>
+						<phase>test</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
 					</execution>
 				</executions>
 			</plugin>

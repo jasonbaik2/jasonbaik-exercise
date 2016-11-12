@@ -7,6 +7,7 @@ The `InputStream` and `Reader` implementations in Java use the Decorator pattern
 Also, the Adapter pattern is used to wrap an `InputStream` type as a `Reader` type. For example, `InputStreamReader` can take an instance of `InputStream` as a constructor parameter, and wraps the passed `InputStream` instance in a way that the data read from the stream is implicitly converted to a character stream.  
 &nbsp;  
 **3. Coding Test**  
-Assumptions:
+Test: Create an Iterator filtering framework: (1) IObjectTest interface with a single bool Test(object o) method and (2) an implementation of IEnumerator (let&#39;s call it FilteringEnumerator) which is initialized with another Enumerator and an IObjectTest instance: new FilteringEnumerator(myEnumerator, myTest). Your FilteringEnumerator will then allow iteration over &#39;myEmumerator&#39;, but skipping any objects which don&#39;t pass the &#39;myTest&#39; test. Create a simple unit test for this framework.
+
+Assumptions Made:
 - FilteringEnumerator does not need to be thread-safe; it's expected to be used only in a single-threaded context.
-- Test: Create an Iterator filtering framework: (1) IObjectTest interface with a single bool Test(object o) method and (2) an implementation of IEnumerator (let&#39;s call it FilteringEnumerator) which is initialized with another Enumerator and an IObjectTest instance: new FilteringEnumerator(myEnumerator, myTest). Your FilteringEnumerator will then allow iteration over &#39;myEmumerator&#39;, but skipping any objects which don&#39;t pass the &#39;myTest&#39; test. Create a simple unit test for this framework.
