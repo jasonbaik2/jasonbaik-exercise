@@ -6,7 +6,9 @@ import me.jasonbaik.enumerator.IEnumerator;
 public class FilteringEnumerator {
 
 	public FilteringEnumerator(IEnumerator enumerator, IObjectTest test) {
-
+		if (null == enumerator) {
+			throw new IllegalArgumentException();
+		}
 	}
 
 }
