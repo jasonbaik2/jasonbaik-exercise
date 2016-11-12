@@ -7,8 +7,8 @@ import me.jasonbaik.function.IObjectTest;
 
 public class FilteringEnumerator<E extends Object> implements IEnumerator<E> {
 
-	private IEnumerator<E> enumerator;
-	private IObjectTest predicate;
+	private final IEnumerator<E> enumerator;
+	private final IObjectTest predicate;
 
 	public FilteringEnumerator(IEnumerator<E> enumerator, IObjectTest predicate) {
 		if (null == enumerator) {
@@ -67,16 +67,8 @@ public class FilteringEnumerator<E extends Object> implements IEnumerator<E> {
 		return enumerator;
 	}
 
-	public void setEnumerator(IEnumerator<E> enumerator) {
-		this.enumerator = enumerator;
-	}
-
 	public IObjectTest getPredicate() {
 		return predicate;
-	}
-
-	public void setPredicate(IObjectTest predicate) {
-		this.predicate = predicate;
 	}
 
 }

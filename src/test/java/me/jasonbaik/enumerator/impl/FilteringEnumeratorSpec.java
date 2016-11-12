@@ -130,25 +130,30 @@ public class FilteringEnumeratorSpec {
 		IEnumerator<String> enumerator = Mockito.mock(IEnumerator.class);
 		Mockito.when(enumerator.iterator()).thenReturn(new Iterator<String>() {
 
+			private String[] array = new String[] { "kiwi", "banana", "apple", "pineapple", "banana" };
 			private int index = 0;
 
 			@Override
 			public String next() {
-				return "";
+				return array[index++];
 			}
 
 			@Override
 			public boolean hasNext() {
-				return index++ < 5;
+				return index < array.length;
 			}
 
 		});
 
 		IObjectTest test = (o) -> {
+			if ("kiwi".equals(o)) {
+				return true;
+			}
 			return false;
 		};
 
 		filteringEnumerator = new FilteringEnumerator<>(enumerator, test);
+		Assert.assertTrue(filteringEnumerator.iterator().hasNext());
 		Assert.assertFalse(filteringEnumerator.iterator().hasNext());
 	}
 
@@ -158,25 +163,30 @@ public class FilteringEnumeratorSpec {
 		IEnumerator<String> enumerator = Mockito.mock(IEnumerator.class);
 		Mockito.when(enumerator.iterator()).thenReturn(new Iterator<String>() {
 
+			private String[] array = new String[] { "kiwi", "banana", "apple", "pineapple", "banana" };
 			private int index = 0;
 
 			@Override
 			public String next() {
-				return "";
+				return array[index++];
 			}
 
 			@Override
 			public boolean hasNext() {
-				return index++ < 5;
+				return index < array.length;
 			}
 
 		});
 
 		IObjectTest test = (o) -> {
+			if ("kiwi".equals(o)) {
+				return true;
+			}
 			return false;
 		};
 
 		filteringEnumerator = new FilteringEnumerator<>(enumerator, test);
+		assertThat(filteringEnumerator.iterator().next(), Matchers.equalTo("kiwi"));
 		exceptionRule.expect(IllegalStateException.class);
 		filteringEnumerator.iterator().next();
 	}
@@ -187,7 +197,7 @@ public class FilteringEnumeratorSpec {
 		IEnumerator<String> enumerator = Mockito.mock(IEnumerator.class);
 		Mockito.when(enumerator.iterator()).thenReturn(new Iterator<String>() {
 
-			private String[] array = new String[] { "apple", "banana", "apple", "pineapple", "banana" };
+			private String[] array = new String[] { "kiwi", "banana", "apple", "pineapple", "banana" };
 			private int index = 0;
 
 			@Override
@@ -219,7 +229,7 @@ public class FilteringEnumeratorSpec {
 
 		assertThat(iterated, Matchers.not(Matchers.contains("apple")));
 		assertThat(iterated, Matchers.not(Matchers.contains("pineapple")));
-		assertThat(String.join(",", iterated), Matchers.equalTo("banana,banana"));
+		assertThat(String.join(",", iterated), Matchers.equalTo("kiwi,banana,banana"));
 	}
 
 	@SuppressWarnings("unchecked")
