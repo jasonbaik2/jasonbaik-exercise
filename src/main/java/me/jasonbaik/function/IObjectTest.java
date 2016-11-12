@@ -1,4 +1,4 @@
-package me.jasonbaik;
+package me.jasonbaik.function;
 
 public interface IObjectTest {
 
