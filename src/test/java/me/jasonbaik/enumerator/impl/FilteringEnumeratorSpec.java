@@ -66,9 +66,9 @@ public class FilteringEnumeratorSpec {
 		filteringEnumerator = new FilteringEnumerator<>(Mockito.mock(FilteringEnumerator.class), Mockito.mock(IObjectTest.class));
 
 		assertThat(filteringEnumerator.getEnumerator(), Matchers.notNullValue());
-		assertThat(filteringEnumerator.getTest(), Matchers.notNullValue());
+		assertThat(filteringEnumerator.getPredicate(), Matchers.notNullValue());
 		assertThat(filteringEnumerator.getEnumerator(), Matchers.isA(IEnumerator.class));
-		assertThat(filteringEnumerator.getTest(), Matchers.isA(IObjectTest.class));
+		assertThat(filteringEnumerator.getPredicate(), Matchers.isA(IObjectTest.class));
 	}
 
 	@SuppressWarnings("unchecked")
@@ -220,6 +220,43 @@ public class FilteringEnumeratorSpec {
 		assertThat(iterated, Matchers.not(Matchers.contains("apple")));
 		assertThat(iterated, Matchers.not(Matchers.contains("pineapple")));
 		assertThat(String.join(",", iterated), Matchers.equalTo("banana,banana"));
+	}
+
+	@SuppressWarnings("unchecked")
+	@Test
+	public void whenItearatingNullElementsThenNoNullPointerException() {
+		IEnumerator<String> enumerator = Mockito.mock(IEnumerator.class);
+		Mockito.when(enumerator.iterator()).thenReturn(new Iterator<String>() {
+
+			private String[] array = new String[] { null, null, null, null, null };
+			private int index = 0;
+
+			@Override
+			public String next() {
+				return array[index++];
+			}
+
+			@Override
+			public boolean hasNext() {
+				return index < array.length;
+			}
+
+		});
+
+		IObjectTest test = (o) -> {
+			return true;
+		};
+
+		filteringEnumerator = new FilteringEnumerator<>(enumerator, test);
+
+		List<String> iterated = new ArrayList<>(8);
+
+		for (String s : filteringEnumerator) {
+			iterated.add(s);
+		}
+
+		assertThat(iterated, Matchers.hasSize(5));
+		assertThat(String.join(",", iterated), Matchers.equalTo("null,null,null,null,null"));
 	}
 
 }

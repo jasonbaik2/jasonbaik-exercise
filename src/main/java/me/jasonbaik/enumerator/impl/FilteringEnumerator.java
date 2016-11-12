@@ -5,22 +5,22 @@ import java.util.Iterator;
 import me.jasonbaik.enumerator.IEnumerator;
 import me.jasonbaik.function.IObjectTest;
 
-public class FilteringEnumerator<E> implements IEnumerator<E> {
+public class FilteringEnumerator<E extends Object> implements IEnumerator<E> {
 
 	private IEnumerator<E> enumerator;
-	private IObjectTest test;
+	private IObjectTest predicate;
 
-	public FilteringEnumerator(IEnumerator<E> enumerator, IObjectTest test) {
+	public FilteringEnumerator(IEnumerator<E> enumerator, IObjectTest predicate) {
 		if (null == enumerator) {
 			throw new IllegalArgumentException();
 		}
 
-		if (null == test) {
+		if (null == predicate) {
 			throw new IllegalArgumentException();
 		}
 
 		this.enumerator = enumerator;
-		this.test = test;
+		this.predicate = predicate;
 	}
 
 	@Override
@@ -28,33 +28,34 @@ public class FilteringEnumerator<E> implements IEnumerator<E> {
 		return new Iterator<E>() {
 
 			private Iterator<E> innerIterator = enumerator.iterator();
+			private boolean nextExists;
 			private E next;
 			private E nextCandidate;
 
 			@Override
 			public boolean hasNext() {
-				if (null != next) {
+				if (nextExists) {
 					return true;
 				}
 
 				while (innerIterator.hasNext()) {
 					nextCandidate = innerIterator.next();
 
-					if (test.test(nextCandidate)) {
+					if (predicate.test(nextCandidate)) {
 						next = nextCandidate;
+						nextExists = true;
 						break;
 					}
 				}
 
-				return next != null;
+				return nextExists;
 			}
 
 			@Override
 			public E next() {
 				if (hasNext()) {
-					E temp = next;
-					next = null;
-					return temp;
+					nextExists = false;
+					return next;
 				}
 				throw new IllegalStateException();
 			}
@@ -70,12 +71,12 @@ public class FilteringEnumerator<E> implements IEnumerator<E> {
 		this.enumerator = enumerator;
 	}
 
-	public IObjectTest getTest() {
-		return test;
+	public IObjectTest getPredicate() {
+		return predicate;
 	}
 
-	public void setTest(IObjectTest test) {
-		this.test = test;
+	public void setPredicate(IObjectTest predicate) {
+		this.predicate = predicate;
 	}
 
 }
